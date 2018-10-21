@@ -11,18 +11,13 @@
 Set GetCollection() {
 	Set url_set = newSet();
 	FILE *f = fopen("collection.txt", "r");
-	char *url = malloc(13);
+	char *url = malloc(14);
 	int size = 0;
 	while (fscanf(f, "%s", url) != EOF) {
 		insertInto(url_set, url);
 		size++;
 	}
-	showSet(url_set);
 	return url_set;
-
-
-	Graph web = newGraph(size);
-	showGraph(web, 0);
 }
 
 
@@ -52,9 +47,3 @@ void GetInvertedList(Set s) {
 	
 }
 
-int main(void) {
-	Set url = GetCollection();
-	Graph g = GetGraph(url);
-	showGraph(g, 0);
-
-}

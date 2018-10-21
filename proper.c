@@ -15,9 +15,11 @@ double weighted_value(char *prev_url, Graph web, int size, Set urls, double page
 int main (int arg , char *argv[]) {
 	Set urls = GetCollection();
 	Graph web = GetGraph(urls);
+	showGraph(web, 1);
+	showGraph(web, 0);
+
 	int size = nElems(urls);
 
-	int outlinks[size];
 	double curr_page_rank[size];
 	double prev_page_rank[size];
 	int i = 0;
@@ -39,30 +41,16 @@ int main (int arg , char *argv[]) {
 		while (i < size) {
 			char *url = get_element(urls, i);
 			curr_page_rank[i] = ((1.0-d)/(double)size) + (d * weighted_formula(url, web,size, urls, prev_page_rank));
-			outlinks[i] = out_links(url, web, urls);
 			i++;
 		}
 		diff = calculate_diff(size, curr_page_rank, prev_page_rank);
 		iterate_page_rank(size, curr_page_rank, prev_page_rank);
 		iteration++;
 	}
-	FILE* f = fopen("pagerankList.txt","w");
-
 	i = 0;
 	while (i < size) {
-		double largest = 0;
-		int j = 0;
-		int index = 0;
-		while (j < size) {
-			if (largest < curr_page_rank[j]) {
-				largest = curr_page_rank[j];
-				index = j;
-			}
-			j++;
-		}
-		char *url = get_element(urls, index);
-		fprintf(f,"%s, %d, %.7f\n", url, outlinks[index], curr_page_rank[index]);
-		curr_page_rank[index] = 0;
+		printf("%s\n", get_element(urls, i));
+		printf("%f\n",curr_page_rank[i]);
 		i++;
 	}
 }
