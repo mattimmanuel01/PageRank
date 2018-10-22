@@ -218,6 +218,7 @@ int main(int argc, char *argv[]) {
 			p = strstr(line, search);
 			if (p) {
 				char *new_word = strtok(line, " "); // contain urls of terms
+				if(strcmp(new_word,search) != 0)continue; //skip partial matches
 				while (new_word != NULL) { // to extract the urls
 					new_word = strtok(NULL, " "); // skip the word. eg: skip mars in 'mars url1 url2'
 					if (new_word == NULL)break;
