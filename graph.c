@@ -19,7 +19,6 @@ typedef struct GraphRep {
 } GraphRep;
 
 // Function signatures
-
 Graph newGraph();
 void  disposeGraph(Graph);
 int   addEdge(Graph,char *,char *);
@@ -29,6 +28,17 @@ void  showGraph(Graph,int);
 
 static int vertexID(char *, char **, int);
 int addVertex(char *, char **, int);
+
+
+
+char *strdup (const char *s)
+{
+  size_t len = strlen (s) + 1;
+  void *new = malloc (len);
+  if (new == NULL)
+    return NULL;
+  return (char *) memcpy (new, s, len);
+}
 
 // newGraph()
 // - create an initially empty Graph

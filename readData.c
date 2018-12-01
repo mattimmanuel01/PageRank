@@ -4,29 +4,23 @@
 #include "set.h"
 #include "graph.h"
 
-
-
-
-
+//Gets all urls
 Set GetCollection() {
+
 	Set url_set = newSet();
 	FILE *f = fopen("collection.txt", "r");
-	char *url = malloc(13);
+	char *url = malloc(14);
 	int size = 0;
 	while (fscanf(f, "%s", url) != EOF) {
 		insertInto(url_set, url);
 		size++;
 	}
-	showSet(url_set);
 	return url_set;
-
-
-	Graph web = newGraph(size);
-	showGraph(web, 0);
 }
 
-
+//Forms a graph from urls
 Graph GetGraph(Set s) {
+	
 	int size = nElems(s);
 	Graph web = newGraph(size);
 	int i = 0;
@@ -38,23 +32,22 @@ Graph GetGraph(Set s) {
 		FILE *f = fopen(file, "r");
 		fscanf(f, "%s", next_url);
 		fscanf(f, "%s", next_url);
-		fscanf(f, "%s", next_url);
-		while (next_url[0] != '#') {
-			addEdge(web, url, next_url);
-			fscanf(f, "%s", next_url);
+		int end = 0;
+		while (fscanf(f, "%s", next_url) != 0) {
+			if (strcmp(next_url, "#end") == 0) {
+				end = 1;
+			} else if (end == 1 && strcmp(next_url, "Section-1") == 0) {
+				break;
+			} else if (end == 1){
+				end = 0;
+				addEdge(web, url, "#end");
+			}
+			if (end == 0) {
+				addEdge(web, url, next_url);
+			}
 		}
 		i++;
 	}
 	return web;
 }
 
-void GetInvertedList(Set s) {
-	
-}
-
-int main(void) {
-	Set url = GetCollection();
-	Graph g = GetGraph(url);
-	showGraph(g, 0);
-
-}

@@ -63,6 +63,28 @@ void disposeSet(Set s)
 
 // insertInto(Set,Str)
 // - ensure that Str is in Set
+void insertUnordered(Set s, char *str)
+{
+	assert(s != NULL);
+	Link curr, prev;
+	int found = findNode(s->elems,str,&curr,&prev);
+	if (found) return; // already in Set
+	Link new = newNode(str);
+	s->nelems++;
+	if (s->elems == NULL) {
+		s->elems = new;
+		return;
+	}
+
+	curr = s->elems;
+	while (curr->next != NULL) {
+		curr = curr->next;
+	}
+	curr->next = new;
+}
+
+// insertInto(Set,Str)
+// - ensure that Str is in Set
 void insertInto(Set s, char *str)
 {
 	assert(s != NULL);
@@ -135,8 +157,8 @@ void showSet(Set s)
 	}
 }
 
-
-
+//Gets element corresponding to index
+//If index is out of range return error message
 char *get_element(Set s, int index)
 {
 	Link curr = s->elems;
@@ -158,13 +180,29 @@ char *get_element(Set s, int index)
 		strcpy(line, curr->val);
 		return line;
 	}
+}
+
+//Returns index when given a key
+//If unfound returns 0
+int get_index(Set s, char *url) 
+{
+	Link curr = s->elems;
+	if (s->nelems == 0) {
+		return 0;
+	}
+	int i = 0;
+	while (i<s->nelems) {
+		if (strcmp(url, curr->val) == 0) {
+			return i;
+		}
+		curr = curr->next;
+		i++;
+	}
+	return 0;
 
 }
 
-
-
 // Helper functions
-
 static Link newNode(char *str)
 {
 	Link new = malloc(sizeof(Node));
@@ -180,6 +218,9 @@ static void disposeNode(Link curr)
 	free(curr->val);
 	free(curr);
 }
+
+//This sorts alphabetically WE DONT WANT THIS
+
 
 // findNode(L,Str)
 // - finds where Str could be added into L

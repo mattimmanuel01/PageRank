@@ -7,7 +7,6 @@
 typedef struct GraphRep *Graph;
 
 // Function signatures
-
 Graph newGraph(int);
 void  disposeGraph(Graph);
 int   addEdge(Graph,char *,char *);
